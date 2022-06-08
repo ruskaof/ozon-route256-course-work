@@ -12,7 +12,6 @@ import com.ruskaof.homework2.presentation.viewModel.ProductsListViewModel
 import com.ruskaof.homework2.presentation.viewModel.viewModelCreator
 
 class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
-    private lateinit var recyclerView: RecyclerView
     private val adapter = ProductsListAdapter(this::onProductClick)
 
     private val vm: ProductsListViewModel by viewModelCreator {
@@ -22,7 +21,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = requireView().findViewById(R.id.recyclerview)
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireView().context)
         recyclerView.adapter = adapter
 

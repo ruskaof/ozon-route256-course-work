@@ -10,12 +10,16 @@ class ProductsListViewModel(private val productsInteractor: ProductsInteractor) 
     private val _productsListLD: MutableLiveData<List<ProductInListVO>> = MutableLiveData()
     val productListLD: LiveData<List<ProductInListVO>> = _productsListLD
 
+    private var productsList: List<ProductInListVO> = emptyList()
+
     init {
-        _productsListLD.value = productsInteractor.getProducts()
+        productsList = productsInteractor.getProducts()
+        _productsListLD.value = productsList
     }
 
     fun increaseViewCounter(guid: String) {
         productsInteractor.increaseViewCounter(guid)
-        _productsListLD.value = productsInteractor.getProducts()
+        productsList.first() { it.guid == guid }.viewCounter++
+        _productsListLD.value = productsList
     }
 }

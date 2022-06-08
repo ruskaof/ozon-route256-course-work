@@ -8,5 +8,5 @@ data class ProductInListVO(
     val rating: Double,
     val isFavorite: Boolean,
     val isInCart: Boolean,
-    val viewCounter: Int
+    var viewCounter: Int
 )

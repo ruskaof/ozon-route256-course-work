@@ -20,9 +20,9 @@ class ProductsListAdapter(
     class ViewHolder(
         view: View,
         private val onProductClickListener: (guid: String) -> Unit,
-        private val data: List<ProductInListVO>
-    ) :
-        RecyclerView.ViewHolder(view), View.OnClickListener {
+    ) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        lateinit var guid: String
+
         val image: ImageView = view.findViewById(R.id.productIV)
         val name: TextView = view.findViewById(R.id.nameTV)
         val price: TextView = view.findViewById(R.id.priceTV)
@@ -35,7 +35,7 @@ class ProductsListAdapter(
         }
 
         override fun onClick(view: View?) {
-            onProductClickListener.invoke(data[adapterPosition].guid)
+            onProductClickListener.invoke(guid)
         }
     }
 
@@ -44,7 +44,7 @@ class ProductsListAdapter(
             .from(parent.context)
             .inflate(R.layout.product_list_item, parent, false)
 
-        return ViewHolder(view, onProductClickListener, data)
+        return ViewHolder(view, onProductClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -53,6 +53,8 @@ class ProductsListAdapter(
         val price: String = data[position].price
         val rating = data[position].rating
         val viewCounter = data[position].viewCounter
+
+        holder.guid = data[position].guid
 
         holder.viewCounter.text = viewCounter.toString()
         holder.name.text = name
