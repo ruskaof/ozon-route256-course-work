@@ -10,10 +10,10 @@ class MockProductsRepositoryImpl : ProductsRepository {
     }
 
     override fun getProductById(guid: String): ProductDTO {
-        return mockProducts.find { product -> product.guid == guid }!!
+        return mockProducts.first() { product -> product.guid == guid }
     }
 
     override fun increaseViewCounter(guid: String) {
-        mockProductsInList.find { it.guid == guid }!!.viewCounter++
+        mockProductsInList.first() { it.guid == guid }.viewCounter++
     }
 }

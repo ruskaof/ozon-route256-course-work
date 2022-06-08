@@ -7,16 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ruskaof.homework2.R
 import com.ruskaof.homework2.data.di.ServiceLocator
-import com.ruskaof.homework2.presentation.adapters.ProductListAdapter
+import com.ruskaof.homework2.presentation.adapters.ProductsListAdapter
 import com.ruskaof.homework2.presentation.viewModel.ProductsListViewModel
-import com.ruskaof.homework2.presentation.viewObject.ProductInListVO
 import com.ruskaof.homework2.presentation.viewModel.viewModelCreator
 
-class ProductsListFragment : Fragment(R.layout.fragment_products_list),
-    ProductListAdapter.OnItemClickListener {
+class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ProductListAdapter
-    private lateinit var data: List<ProductInListVO>
+    private val adapter = ProductsListAdapter(this::onProductClick)
 
     private val vm: ProductsListViewModel by viewModelCreator {
         ProductsListViewModel(ServiceLocator().productsInteractor)
@@ -27,28 +24,21 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
 
         recyclerView = requireView().findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireView().context)
+        recyclerView.adapter = adapter
 
         vm.productListLD.observe(viewLifecycleOwner) {
-            data = it
-            adapter = ProductListAdapter(it, this)
-            recyclerView.adapter = adapter
+            adapter.data = it
         }
     }
 
 
-    override fun onClick(position: Int) {
-        val guid = data[position].guid
-        val args = Bundle()
-        args.putString("guid", guid)
-
+    private fun onProductClick(guid: String) {
         parentFragmentManager.beginTransaction().apply {
-            val productInfoFragment = ProductInfoFragment()
-            productInfoFragment.arguments = args
-            replace(R.id.fragmentContainerView, productInfoFragment)
+            replace(R.id.fragmentContainerView, ProductInfoFragment.Builder().setGuid(guid).build())
             addToBackStack(null)
+            commit()
 
             vm.increaseViewCounter(guid)
-            commit()
         }
     }
 }

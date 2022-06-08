@@ -11,13 +11,17 @@ import com.bumptech.glide.Glide
 import com.ruskaof.homework2.R
 import com.ruskaof.homework2.presentation.viewObject.ProductInListVO
 
-class ProductListAdapter(
-    private val data: List<ProductInListVO>,
-    private val onItemClickListener: OnItemClickListener
+class ProductsListAdapter(
+    private val onProductClickListener: (guid: String) -> Unit
 ) :
-    RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<ProductsListAdapter.ViewHolder>() {
+    var data: List<ProductInListVO> = emptyList()
 
-    class ViewHolder(view: View, private val onItemClickListener: OnItemClickListener) :
+    class ViewHolder(
+        view: View,
+        private val onProductClickListener: (guid: String) -> Unit,
+        private val data: List<ProductInListVO>
+    ) :
         RecyclerView.ViewHolder(view), View.OnClickListener {
         val image: ImageView = view.findViewById(R.id.productIV)
         val name: TextView = view.findViewById(R.id.nameTV)
@@ -31,7 +35,7 @@ class ProductListAdapter(
         }
 
         override fun onClick(view: View?) {
-            onItemClickListener.onClick(adapterPosition)
+            onProductClickListener.invoke(data[adapterPosition].guid)
         }
     }
 
@@ -40,7 +44,7 @@ class ProductListAdapter(
             .from(parent.context)
             .inflate(R.layout.product_list_item, parent, false)
 
-        return ViewHolder(view, onItemClickListener)
+        return ViewHolder(view, onProductClickListener, data)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -61,7 +65,4 @@ class ProductListAdapter(
         return data.size
     }
 
-    interface OnItemClickListener {
-        fun onClick(position: Int)
-    }
 }
