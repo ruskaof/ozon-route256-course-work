@@ -1,0 +1,25 @@
+package com.ruskaof.core_navigation_impl
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.ruskaof.core_navigation_impl.di.FeatureInjectorProxy
+import com.ruskaof.feature_product_impl.presentation.view.ProductsListFragment
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        navigateProduct()
+    }
+
+    private fun navigateProduct() {
+        FeatureInjectorProxy.initFeatureProductsDI()
+        val newFragment = ProductsListFragment()
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentContainerView, newFragment, ProductsListFragment::class.simpleName)
+            .addToBackStack(null)
+            .commit()
+    }
+}

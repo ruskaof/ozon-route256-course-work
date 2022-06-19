@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-android'
@@ -11,13 +11,11 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "ru.ozon.route256.marketplace"
         minSdk 26
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -36,25 +34,19 @@ android {
 }
 
 dependencies {
+
+    implementation project(":core-navigation-api")
     implementation project(":core-network-api")
     implementation project(":core-network-impl")
-    implementation project(":core-utils")
     implementation project(":feature-products-list-api")
     implementation project(":feature-products-list-impl")
     implementation project(":feature-pdp-api")
     implementation project(":feature-pdp-impl")
-    implementation project(":core-navigation-api")
-    implementation project(":core-navigation-impl")
 
     implementation coreKtx
     implementation appCompat
-    implementation material
-    implementation constraintLayout
-    implementation viewModel
-    implementation lifecycle
-    implementation liveData
-    implementation glide
 
     implementation dagger
+    implementation constraintLayout
     kapt daggerCompiler
 }
