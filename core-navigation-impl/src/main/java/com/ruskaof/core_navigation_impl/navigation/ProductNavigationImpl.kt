@@ -15,7 +15,7 @@ class ProductNavigationImpl @Inject constructor(): ProductNavigationApi {
         fragment.activity
             ?.supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragmentContainerView, newFragment)
+            ?.replace(R.id.fragmentContainerView, newFragment, ProductInfoFragment::class.simpleName)
             ?.addToBackStack(null)
             ?.commit()
     }
