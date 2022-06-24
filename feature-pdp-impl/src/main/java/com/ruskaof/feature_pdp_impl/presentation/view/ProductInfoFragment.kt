@@ -41,9 +41,7 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductInfoFeatureComponent.get().inject(this)
-        vm.updateData(requireContext(), this) {
-            toggleProgressBar()
-        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +68,10 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
                 info.text = it.description
                 Glide.with(requireContext().applicationContext).load(it.images[0]).into(image)
             }
+        }
+
+        vm.updateData(requireContext(), this) {
+            toggleProgressBar()
         }
     }
 
