@@ -41,7 +41,9 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductInfoFeatureComponent.get().inject(this)
-        vm.updateData(requireContext(), this) { toggleProgressBar() }
+        vm.updateData(requireContext(), this) {
+            toggleProgressBar()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -23,9 +23,11 @@ class ProductsListViewModel(private val productsInteractor: ProductsListInteract
 
             productsInteractor.updateData(context, lifecycleOwner) {
                 currentData = productsInteractor.getProductsList(context)
-                productsList = currentData!!
-                _productsListLD.value = productsList
-                onDataUpdated()
+                if (currentData != null) {
+                    productsList = currentData!!
+                    _productsListLD.value = productsList
+                    onDataUpdated()
+                }
             }
         } else {
             productsList = currentData!!
