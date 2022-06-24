@@ -32,6 +32,11 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
         )
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        ProductInfoFeatureComponent.get().inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,22 +66,17 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
     }
 
     class Builder {
+
         private val bundle = Bundle()
 
         fun setGuid(guid: String): Builder {
             bundle.putString("guid", guid)
             return this
         }
-
         fun build(): ProductInfoFragment {
             val fragment = ProductInfoFragment()
             fragment.arguments = bundle
             return fragment
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        ProductInfoFeatureComponent.get().inject(this)
     }
 }

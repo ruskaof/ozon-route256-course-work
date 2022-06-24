@@ -9,10 +9,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        navigateProduct()
+        openProductsFragment()
     }
 
-    private fun navigateProduct() {
+    private fun openProductsFragment() {
         FeatureInjectorProxy.initFeatureProductsDI()
         val newFragment = ProductsListFragment()
 
