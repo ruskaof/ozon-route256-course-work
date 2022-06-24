@@ -35,6 +35,9 @@ android {
 dependencies {
     implementation project(":core-network-api")
 
+
+    implementation retrofit
+    implementation gsonConverter
     implementation dagger
     kapt daggerCompiler
 }

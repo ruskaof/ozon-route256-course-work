@@ -5,6 +5,6 @@ import com.ruskaof.core_network_api.models.ProductInfoDTO
 
 interface ProductApi {
     fun getProductsList(): List<ProductInListDTO>
-    fun getProductInfo(guid: String): ProductInfoDTO
+    fun getProductsInfo(): List<ProductInfoDTO>
     fun increaseViewCounter(guid: String)
 }

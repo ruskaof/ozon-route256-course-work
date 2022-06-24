@@ -47,5 +47,7 @@ dependencies {
     implementation liveData
     implementation glide
     implementation dagger
+    implementation workers
+    implementation gson
     kapt daggerCompiler
 }

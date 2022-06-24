@@ -4,8 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.ruskaof.feature_pdp_api.ProductInfoNavigationApi
@@ -25,6 +28,9 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
     @Inject
     lateinit var productInfoNavigationApi: ProductInfoNavigationApi
 
+    private lateinit var progressBar: ProgressBar
+    private lateinit var itemsCL: ConstraintLayout
+
     private val vm: ProductInfoViewModel by viewModelCreator {
         ProductInfoViewModel(
             productInfoInteractor,
@@ -35,10 +41,17 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductInfoFeatureComponent.get().inject(this)
+        vm.updateData(requireContext(), this) { toggleProgressBar() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        progressBar = requireView().findViewById(R.id.progressBar)
+        progressBar.isVisible = true
+        itemsCL = requireView().findViewById(R.id.itemsCL)
+        itemsCL.isVisible = false
+
 
         val price: TextView = requireView().findViewById(R.id.priceTV)
         val name: TextView = requireView().findViewById(R.id.nameTV)
@@ -48,11 +61,20 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
 
 
         vm.productInfoLD.observe(viewLifecycleOwner) {
-            price.text = it.price
-            name.text = it.name
-            rating.rating = it.rating.toFloat()
-            info.text = it.description
-            Glide.with(requireContext().applicationContext).load(it.images[0]).into(image)
+            if (it != null) {
+                price.text = it.price
+                name.text = it.name
+                rating.rating = it.rating.toFloat()
+                info.text = it.description
+                Glide.with(requireContext().applicationContext).load(it.images[0]).into(image)
+            }
+        }
+    }
+
+    private fun toggleProgressBar() {
+        if (progressBar.isVisible) {
+            progressBar.isVisible = false
+            itemsCL.isVisible = true
         }
     }
 

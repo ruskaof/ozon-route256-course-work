@@ -37,6 +37,7 @@ dependencies {
     implementation project(":core-utils")
     implementation project(":feature-products-list-api")
 
+    implementation gson
     implementation coreKtx
     implementation appCompat
     implementation material
@@ -46,5 +47,6 @@ dependencies {
     implementation liveData
     implementation glide
     implementation dagger
+    implementation workers
     kapt daggerCompiler
 }

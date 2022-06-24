@@ -2,7 +2,11 @@ package com.ruskaof.feature_product_impl.presentation.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,11 +23,14 @@ import javax.inject.Inject
 class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     private val adapter = ProductsListAdapter(this::onProductClick)
 
+    private lateinit var progressBar: ProgressBar
+
     @Inject
     lateinit var productsInteractor: ProductsListInteractor
 
     @Inject
     lateinit var productNavigationApi: ProductNavigationApi
+
 
     private val vm: ProductsListViewModel by viewModelCreator {
         ProductsListViewModel(productsInteractor)
@@ -32,11 +39,18 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductFeatureComponent.productFeatureComponent?.inject(this)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressBar = requireView().findViewById(R.id.progressBar)
+        progressBar.isVisible = true
 
+        vm.updateData(requireContext(), this) {
+            toggleLoading()
+            adapter.notifyDataSetChanged()
+        }
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireView().context)
         recyclerView.adapter = adapter
@@ -44,6 +58,13 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
         vm.productListLD.observe(viewLifecycleOwner) {
             adapter.data = it
         }
+
+
+
+    }
+
+    private fun toggleLoading() {
+        if (progressBar.isVisible) progressBar.isVisible = false
     }
 
     override fun onPause() {

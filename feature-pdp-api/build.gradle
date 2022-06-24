@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply from: "../dependencies.gradle"
+
 android {
     compileSdk 31
 
@@ -26,6 +28,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    dependencies {
+        implementation coreKtx
+        implementation appCompat
+        implementation fragment
     }
 }
 
