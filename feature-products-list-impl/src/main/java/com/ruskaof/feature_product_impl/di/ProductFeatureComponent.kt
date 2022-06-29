@@ -2,14 +2,13 @@ package com.ruskaof.feature_product_impl.di
 
 import com.ruskaof.core_network_api.NetworkApi
 import com.ruskaof.core_utils.di.PerFeature
-import com.ruskaof.feature_product_impl.data.repository_impl.ProductsInfoWorker
-import com.ruskaof.feature_product_impl.data.repository_impl.ProductsListWorker
+import com.ruskaof.data_updater_api.DataUpdaterApi
 import com.ruskaof.feature_product_impl.presentation.view.ProductsListFragment
 import com.ruskaof.feature_products_api.ProductNavigationApi
 import dagger.Component
 
 @Component(
-    modules = [InteractorModule::class, RepositoryModule::class],
+    modules = [InteractorModule::class, RepositoryModule::class, GsonModule::class],
     dependencies = [ProductsListFeatureDependencies::class]
 )
 @PerFeature
@@ -46,10 +45,8 @@ abstract class ProductFeatureComponent {
     }
 
     abstract fun inject(fragment: ProductsListFragment)
-    abstract fun inject(productsListWorker: ProductsListWorker)
-    abstract fun inject(productsInfoWorker: ProductsInfoWorker)
 
-    @Component(dependencies = [NetworkApi::class, ProductNavigationApi::class])
+    @Component(dependencies = [NetworkApi::class, ProductNavigationApi::class, DataUpdaterApi::class])
     @PerFeature
     interface ProductsListFeatureDependenciesComponent : ProductsListFeatureDependencies
 }

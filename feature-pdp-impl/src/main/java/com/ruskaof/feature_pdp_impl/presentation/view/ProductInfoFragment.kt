@@ -16,7 +16,6 @@ import com.ruskaof.feature_pdp_impl.R
 import com.ruskaof.feature_pdp_impl.di.ProductInfoFeatureComponent
 import com.ruskaof.feature_pdp_impl.domain.interactor.ProductInfoInteractor
 import com.ruskaof.feature_pdp_impl.presentation.view_models.ProductInfoViewModel
-import com.ruskaof.feature_products_api.ProductNavigationApi
 import ru.ozon.route256.core_utils.viewModelCreator
 import javax.inject.Inject
 
@@ -67,20 +66,16 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
                 rating.rating = it.rating.toFloat()
                 info.text = it.description
                 Glide.with(requireContext().applicationContext).load(it.images[0]).into(image)
+
+
+                progressBar.isVisible = false
+                itemsCL.isVisible = true
             }
         }
 
-        vm.updateData(requireContext(), this) {
-            toggleProgressBar()
-        }
+        vm.updateData(requireContext(), this)
     }
 
-    private fun toggleProgressBar() {
-        if (progressBar.isVisible) {
-            progressBar.isVisible = false
-            itemsCL.isVisible = true
-        }
-    }
 
     override fun onPause() {
         if (isRemoving) {

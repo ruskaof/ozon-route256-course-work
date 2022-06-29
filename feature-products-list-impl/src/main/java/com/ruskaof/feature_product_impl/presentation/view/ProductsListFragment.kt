@@ -2,9 +2,7 @@ package com.ruskaof.feature_product_impl.presentation.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -47,25 +45,21 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
         progressBar = requireView().findViewById(R.id.progressBar)
         progressBar.isVisible = true
 
-        vm.updateData(requireContext(), this) {
-            toggleLoading()
-            adapter.notifyDataSetChanged()
-        }
+        vm.updateData(requireContext(), this)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireView().context)
         recyclerView.adapter = adapter
 
         vm.productListLD.observe(viewLifecycleOwner) {
-            adapter.data = it
+            if (it != null) {
+                adapter.data = it
+                adapter.notifyDataSetChanged()
+                progressBar.isVisible = false
+            }
         }
 
-
-
     }
 
-    private fun toggleLoading() {
-        if (progressBar.isVisible) progressBar.isVisible = false
-    }
 
     override fun onPause() {
         if (isRemoving) {

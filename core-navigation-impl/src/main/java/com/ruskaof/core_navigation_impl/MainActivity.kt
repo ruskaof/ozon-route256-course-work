@@ -9,6 +9,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initNonFeatureDI()
         openProductsFragment()
     }
 
@@ -18,8 +19,17 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentContainerView, newFragment, ProductsListFragment::class.simpleName)
+            .replace(
+                R.id.fragmentContainerView,
+                newFragment,
+                ProductsListFragment::class.simpleName
+            )
             .addToBackStack(null)
             .commit()
+    }
+
+
+    private fun initNonFeatureDI() {
+        FeatureInjectorProxy.initDataUpdaterDi()
     }
 }

@@ -36,6 +36,7 @@ dependencies {
     implementation project(":core-network-api")
     implementation project(":core-utils")
     implementation project(":feature-products-list-api")
+    implementation project(":data-updater-api")
 
     implementation gson
     implementation coreKtx

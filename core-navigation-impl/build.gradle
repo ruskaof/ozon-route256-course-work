@@ -42,6 +42,8 @@ dependencies {
     implementation project(":feature-products-list-impl")
     implementation project(":feature-pdp-api")
     implementation project(":feature-pdp-impl")
+    implementation project(":data-updater-api")
+    implementation project(":data-updater-impl")
 
     implementation coreKtx
     implementation appCompat
