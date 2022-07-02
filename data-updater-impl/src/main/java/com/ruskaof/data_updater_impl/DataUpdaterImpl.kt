@@ -66,11 +66,15 @@ class DataUpdaterImpl : DataUpdaterApi {
                     context.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
 
+
+
                 editor.remove(Constants.PRODUCTS_LIST_KEY)
                 editor.putString(Constants.PRODUCTS_LIST_KEY, response)
                 editor.apply()
 
                 _statusLD.value = UpdateStatus.PRODUCTS_LIST_UPDATED
+            } else {
+                _statusLD.value = UpdateStatus.ERROR
             }
 
             val productsInfoWorkInfo =
@@ -87,6 +91,8 @@ class DataUpdaterImpl : DataUpdaterApi {
                 editor.apply()
 
                 _statusLD.value = UpdateStatus.PRODUCTS_INFO_UPDATED
+            } else {
+                _statusLD.value = UpdateStatus.ERROR
             }
         }
     }

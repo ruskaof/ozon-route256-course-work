@@ -36,6 +36,9 @@ dependencies {
     implementation project(":core-network-api")
 
 
+    implementation rxjava
+    implementation rxandroid
+    implementation rxjavaAdapter
     implementation retrofit
     implementation gsonConverter
     implementation dagger

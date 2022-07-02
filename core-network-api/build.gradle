@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply from: "../dependencies.gradle"
+
+
 android {
     compileSdk 32
 
@@ -26,5 +29,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    dependencies {
+        implementation 'androidx.work:work-rxjava2:2.7.1'
     }
 }

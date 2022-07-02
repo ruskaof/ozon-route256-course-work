@@ -5,6 +5,7 @@ import com.ruskaof.core_network_impl.data.ServiceApi
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
@@ -14,6 +15,7 @@ class ServiceApiModule {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         return retrofit.create(ServiceApi::class.java)
     }

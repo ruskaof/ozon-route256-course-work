@@ -2,34 +2,49 @@ package com.ruskaof.data_updater_impl.workers
 
 import android.content.Context
 import androidx.work.Data
-import androidx.work.Worker
+import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.ruskaof.core_network_api.ProductApi
 import com.ruskaof.core_utils.Constants
 import com.ruskaof.data_updater_impl.di.DataUpdaterComponent
+import io.reactivex.Single
 import javax.inject.Inject
 
 class ProductsInfoWorker(
     context: Context,
     workerParameters: WorkerParameters
-) : Worker(context, workerParameters) {
+) : RxWorker(context, workerParameters) {
     @Inject
     lateinit var productApi: ProductApi
 
     @Inject
     lateinit var gson: Gson
 
-    override fun doWork(): Result {
-        DataUpdaterComponent.get().inject(this)
+//    override fun doWork(): Result {
+//        DataUpdaterComponent.get().inject(this)
+//
+//        return try {
+//            val data = productApi.getProductsInfo()
+//            Result.success(
+//                Data.Builder().putString(Constants.PRODUCTS_INFO_KEY, gson.toJson(data)).build()
+//            )
+//        } catch (e: Exception) {
+//            Result.failure()
+//        }
+//    }
 
+    override fun createWork(): Single<Result> {
+        DataUpdaterComponent.get().inject(this)
         return try {
             val data = productApi.getProductsInfo()
-            Result.success(
-                Data.Builder().putString(Constants.PRODUCTS_INFO_KEY, gson.toJson(data)).build()
-            )
+            data.map {
+                Result.success(
+                    Data.Builder().putString(Constants.PRODUCTS_INFO_KEY, gson.toJson(it)).build()
+                )
+            }
         } catch (e: Exception) {
-            Result.failure()
+            Single.error(e)
         }
     }
 

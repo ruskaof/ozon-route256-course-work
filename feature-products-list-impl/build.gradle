@@ -49,5 +49,7 @@ dependencies {
     implementation glide
     implementation dagger
     implementation workers
+    implementation rxjava
+    implementation rxandroid
     kapt daggerCompiler
 }

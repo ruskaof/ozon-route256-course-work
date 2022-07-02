@@ -2,6 +2,7 @@ package com.ruskaof.feature_product_impl.presentation.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
@@ -14,9 +15,12 @@ import com.ruskaof.feature_product_impl.domain.interactor.ProductsListInteractor
 import com.ruskaof.feature_product_impl.presentation.view.adapters.ProductsListAdapter
 import com.ruskaof.feature_product_impl.presentation.view_models.ProductsListViewModel
 import com.ruskaof.feature_products_api.ProductNavigationApi
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import ru.ozon.route256.core_utils.viewModelCreator
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
 
 class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     private val adapter = ProductsListAdapter(this::onProductClick)
@@ -26,9 +30,11 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     @Inject
     lateinit var productsInteractor: ProductsListInteractor
 
+
     @Inject
     lateinit var productNavigationApi: ProductNavigationApi
 
+    private lateinit var disposable: Disposable
 
     private val vm: ProductsListViewModel by viewModelCreator {
         ProductsListViewModel(productsInteractor)
@@ -37,6 +43,18 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductFeatureComponent.productFeatureComponent?.inject(this)
+
+    }
+
+    override fun onResume() {
+
+        disposable = Observable.interval(5, TimeUnit.MINUTES)
+            .timeInterval()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                vm.updateData(requireContext(), this)
+            }
+        super.onResume()
 
     }
 
@@ -52,9 +70,13 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
 
         vm.productListLD.observe(viewLifecycleOwner) {
             if (it != null) {
+                Log.d("debugg", "onViewCreated: updated data")
+
                 adapter.data = it
                 adapter.notifyDataSetChanged()
                 progressBar.isVisible = false
+            } else {
+                Log.d("debugg", "onViewCreated: null?")
             }
         }
 
@@ -67,6 +89,8 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
                 ProductFeatureComponent.resetComponent()
             }
         }
+
+        disposable.dispose()
         super.onPause()
     }
 
@@ -76,3 +100,5 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
         productNavigationApi.navigateToProductInfo(this, guid)
     }
 }
+
+

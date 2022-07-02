@@ -42,5 +42,8 @@ dependencies {
     implementation dagger
     implementation lifecycle
     implementation workers
+    implementation rxworkers
+    implementation rxjava
+
     kapt daggerCompiler
 }
