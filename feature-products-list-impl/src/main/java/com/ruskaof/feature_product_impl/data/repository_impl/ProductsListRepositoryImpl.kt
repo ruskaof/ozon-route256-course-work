@@ -13,7 +13,7 @@ import com.ruskaof.core_utils.Constants
 import com.ruskaof.data_updater_api.DataUpdaterApi
 import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_product_impl.domain.repository.ProductsListRepository
-import io.reactivex.Single
+import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import java.lang.reflect.Type
 import javax.inject.Inject
@@ -26,15 +26,16 @@ class ProductsListRepositoryImpl @Inject constructor(
     ProductsListRepository, ContextNeeder {
     private val context = ContextInjectorComponent.get().getContext()
 
-    override fun getProductsList(): Single<List<ProductInListDTO>?> {
+    override fun getProductsList(): Observable<List<ProductInListDTO>?> {
         val sharedPreferences =
             context.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
         val rxPreferences: RxSharedPreferences = RxSharedPreferences.create(sharedPreferences)
         val type: Type = object : TypeToken<List<ProductInListDTO>>() {}.type
         val jsonData = rxPreferences.getString(Constants.PRODUCTS_LIST_KEY, "")
-
-        return Single.fromObservable(jsonData.asObservable().map { gson.fromJson(it, type) })
+        val observable: Observable<List<ProductInListDTO>?> =
+            jsonData.asObservable().map { gson.fromJson(it, type) }
+        return observable
     }
 
     override fun increaseViewCounter(guid: String) {
@@ -44,6 +45,7 @@ class ProductsListRepositoryImpl @Inject constructor(
     override fun updateData(
         lifecycleOwner: LifecycleOwner
     ): BehaviorSubject<UpdateStatus> {
+
         return dataUpdaterApi.updateProductsData(lifecycleOwner)
     }
 

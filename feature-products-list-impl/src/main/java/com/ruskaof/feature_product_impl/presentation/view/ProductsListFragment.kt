@@ -63,6 +63,8 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list) {
         progressBar = requireView().findViewById(R.id.progressBar)
         progressBar.isVisible = true
 
+
+
         vm.updateData(this)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(requireView().context)

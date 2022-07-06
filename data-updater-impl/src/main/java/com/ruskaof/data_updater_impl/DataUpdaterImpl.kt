@@ -60,6 +60,7 @@ class DataUpdaterImpl : DataUpdaterApi, ContextNeeder {
                 workInfoList.find() { it.tags.contains(Constants.PRODUCTS_LIST_WORKER_NAME) }
             if (productsListWorkInfo?.state == WorkInfo.State.SUCCEEDED) {
                 setDataToSharedPref(productsListWorkInfo, Constants.PRODUCTS_LIST_KEY)
+
                 _statusBS.onNext(UpdateStatus.PRODUCTS_LIST_UPDATED)
             } else {
                 _statusBS.onNext(UpdateStatus.ERROR)

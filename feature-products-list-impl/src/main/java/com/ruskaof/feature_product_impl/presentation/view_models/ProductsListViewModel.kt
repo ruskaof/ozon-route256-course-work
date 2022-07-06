@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_product_impl.domain.interactor.ProductsListInteractor
 import com.ruskaof.feature_product_impl.presentation.view_objects.ProductInListVO
 
@@ -17,8 +18,13 @@ class ProductsListViewModel(private val productsInteractor: ProductsListInteract
 
     @SuppressLint("CheckResult")
     fun updateData(lifecycleOwner: LifecycleOwner) {
-        productsInteractor.updateData(lifecycleOwner).subscribe {
-            _productsListLD.value = productsInteractor.getProductsList()
+        productsInteractor.updateData(lifecycleOwner).subscribe { status ->
+
+            if (status == UpdateStatus.PRODUCTS_LIST_UPDATED) {
+                productsInteractor.getProductsList().take(1).subscribe {
+                    _productsListLD.value = it
+                }
+            }
         }
     }
 
