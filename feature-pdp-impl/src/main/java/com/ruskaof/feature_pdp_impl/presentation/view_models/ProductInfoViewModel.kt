@@ -1,6 +1,5 @@
 package com.ruskaof.feature_pdp_impl.presentation.view_models
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +16,7 @@ class ProductInfoViewModel(
     val productInfoLD: LiveData<ProductInfoVO> = _productInfoLD
 
 
-    fun updateData(context: Context) {
-        _productInfoLD.value = interactor.getProductInfo(guid, context)
+    fun updateData() {
+        _productInfoLD.value = interactor.getProductInfo(guid)
     }
 }

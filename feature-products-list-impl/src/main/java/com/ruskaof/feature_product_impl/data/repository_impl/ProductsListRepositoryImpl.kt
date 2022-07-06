@@ -21,6 +21,7 @@ class ProductsListRepositoryImpl @Inject constructor(
     private val gson: Gson,
 ) :
     ProductsListRepository, ContextNeeder {
+    @Inject
     private lateinit var context: Context
 
     init {

@@ -73,7 +73,7 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
             }
         }
 
-        vm.updateData(requireContext())
+        vm.updateData()
     }
 
 
