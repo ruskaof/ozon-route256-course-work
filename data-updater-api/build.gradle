@@ -32,6 +32,8 @@ android {
     }
 
     dependencies {
+
+        implementation rxjava
         implementation lifecycle
         implementation liveData
     }

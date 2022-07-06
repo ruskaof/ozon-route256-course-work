@@ -21,19 +21,6 @@ class ProductsInfoWorker(
     @Inject
     lateinit var gson: Gson
 
-//    override fun doWork(): Result {
-//        DataUpdaterComponent.get().inject(this)
-//
-//        return try {
-//            val data = productApi.getProductsInfo()
-//            Result.success(
-//                Data.Builder().putString(Constants.PRODUCTS_INFO_KEY, gson.toJson(data)).build()
-//            )
-//        } catch (e: Exception) {
-//            Result.failure()
-//        }
-//    }
-
     override fun createWork(): Single<Result> {
         DataUpdaterComponent.get().inject(this)
         return try {

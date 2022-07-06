@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         openProductsFragment()
     }
 
+
     private fun openProductsFragment() {
         FeatureInjectorProxy.initFeatureProductsDI()
         val newFragment = ProductsListFragment()
@@ -31,5 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initNonFeatureDI() {
         FeatureInjectorProxy.initDataUpdaterDi()
+        FeatureInjectorProxy.initContextInjectorDi(applicationContext)
     }
+
 }

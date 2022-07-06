@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ruskaof.core_utils.viewModelCreator
 import com.ruskaof.feature_product_impl.R
 import com.ruskaof.feature_product_impl.di.ProductFeatureComponent
 import com.ruskaof.feature_product_impl.domain.interactor.ProductsListInteractor
@@ -18,7 +19,6 @@ import com.ruskaof.feature_products_api.ProductNavigationApi
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import ru.ozon.route256.core_utils.viewModelCreator
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

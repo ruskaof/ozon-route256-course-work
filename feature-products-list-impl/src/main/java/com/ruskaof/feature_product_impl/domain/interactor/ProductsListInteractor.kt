@@ -1,23 +1,21 @@
 package com.ruskaof.feature_product_impl.domain.interactor
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_product_impl.domain.mapper.toVO
 import com.ruskaof.feature_product_impl.domain.repository.ProductsListRepository
 import com.ruskaof.feature_product_impl.presentation.view_objects.ProductInListVO
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 interface ProductsListInteractor {
-    fun getProductsList(context: Context): List<ProductInListVO>?
-    fun updateData(context: Context, lifecycleOwner: LifecycleOwner): LiveData<UpdateStatus>
+    fun getProductsList(): List<ProductInListVO>?
+    fun updateData(): BehaviorSubject<UpdateStatus>
     fun increaseViewCounter(guid: String)
 }
 
 class ProductsListInteractorImpl @Inject constructor(private val repository: ProductsListRepository): ProductsListInteractor {
-    override fun getProductsList(context: Context): List<ProductInListVO>? {
-        return repository.getProductsList(context)?.map { it.toVO() }
+    override fun getProductsList(): List<ProductInListVO>? {
+        return repository.getProductsList()?.map { it.toVO() }
     }
 
     override fun increaseViewCounter(guid: String) {
@@ -25,9 +23,7 @@ class ProductsListInteractorImpl @Inject constructor(private val repository: Pro
     }
 
     override fun updateData(
-        context: Context,
-        lifecycleOwner: LifecycleOwner
-    ): LiveData<UpdateStatus> {
-        return repository.updateData(context, lifecycleOwner)
+    ): BehaviorSubject<UpdateStatus> {
+        return repository.updateData()
     }
 }

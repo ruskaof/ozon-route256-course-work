@@ -34,7 +34,6 @@ android {
 }
 
 dependencies {
-
     implementation project(":core-navigation-api")
     implementation project(":core-network-api")
     implementation project(":core-network-impl")
@@ -44,11 +43,12 @@ dependencies {
     implementation project(":feature-pdp-impl")
     implementation project(":data-updater-api")
     implementation project(":data-updater-impl")
+    implementation project(":core-context-injector")
+    implementation project(':core-utils')
 
     implementation coreKtx
     implementation appCompat
-
-    implementation dagger
     implementation constraintLayout
+    implementation dagger
     kapt daggerCompiler
 }

@@ -11,12 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.ruskaof.core_utils.viewModelCreator
 import com.ruskaof.feature_pdp_api.ProductInfoNavigationApi
 import com.ruskaof.feature_pdp_impl.R
 import com.ruskaof.feature_pdp_impl.di.ProductInfoFeatureComponent
 import com.ruskaof.feature_pdp_impl.domain.interactor.ProductInfoInteractor
 import com.ruskaof.feature_pdp_impl.presentation.view_models.ProductInfoViewModel
-import ru.ozon.route256.core_utils.viewModelCreator
 import javax.inject.Inject
 
 
@@ -73,7 +73,7 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
             }
         }
 
-        vm.updateData(requireContext(), this)
+        vm.updateData(requireContext())
     }
 
 

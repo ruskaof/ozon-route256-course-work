@@ -1,9 +1,7 @@
 package com.ruskaof.data_updater_api
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
+import io.reactivex.subjects.BehaviorSubject
 
 interface DataUpdaterApi {
-    fun updateProductsData(context: Context, lifecycleOwner: LifecycleOwner): LiveData<UpdateStatus>
+    fun updateProductsData(): BehaviorSubject<UpdateStatus>
 }

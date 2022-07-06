@@ -38,6 +38,8 @@ dependencies {
     implementation project(":feature-products-list-api")
     implementation project(":feature-pdp-api")
     implementation project(":data-updater-api")
+    implementation project(":core-context-needer-api")
+    implementation project(":core-context-injector")
 
 
     implementation coreKtx
@@ -51,5 +53,6 @@ dependencies {
     implementation dagger
     implementation workers
     implementation gson
+    implementation rxjava
     kapt daggerCompiler
 }

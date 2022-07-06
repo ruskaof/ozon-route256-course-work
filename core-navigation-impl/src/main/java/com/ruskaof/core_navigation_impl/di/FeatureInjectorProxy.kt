@@ -1,5 +1,7 @@
 package com.ruskaof.core_navigation_impl.di
 
+import android.content.Context
+import com.ruskaof.core_context_injector.ContextInjectorComponent
 import com.ruskaof.core_network_impl.di.DaggerCoreNetworkComponent
 import com.ruskaof.data_updater_impl.di.DaggerDataUpdaterComponent_DataUpdaterDependenciesComponent
 import com.ruskaof.data_updater_impl.di.DataUpdaterComponent
@@ -51,5 +53,9 @@ object FeatureInjectorProxy {
                 .networkApi(DaggerCoreNetworkComponent.builder().build())
                 .build()
         )
+    }
+
+    fun initContextInjectorDi(context: Context) {
+        ContextInjectorComponent.initAndGet(context)
     }
 }

@@ -1,4 +1,4 @@
-package ru.ozon.route256.core_utils
+package com.ruskaof.core_utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

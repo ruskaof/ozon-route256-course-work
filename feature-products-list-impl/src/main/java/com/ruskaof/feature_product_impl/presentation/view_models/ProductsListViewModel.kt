@@ -16,9 +16,9 @@ class ProductsListViewModel(private val productsInteractor: ProductsListInteract
 
 
     fun updateData(context: Context, lifecycleOwner: LifecycleOwner) {
-        productsInteractor.updateData(context, lifecycleOwner).observe(lifecycleOwner) {
-            _productsListLD.value = productsInteractor.getProductsList(context)
-        }
+//        productsInteractor.updateData(context, lifecycleOwner).observe(lifecycleOwner) {
+//            _productsListLD.value = productsInteractor.getProductsList(context)
+//        }
     }
 
 

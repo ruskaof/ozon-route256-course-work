@@ -1,31 +1,27 @@
 package com.ruskaof.feature_pdp_impl.domain.interactor
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_pdp_impl.domain.mapper.toVO
 import com.ruskaof.feature_pdp_impl.domain.repository.ProductInfoRepository
 import com.ruskaof.feature_pdp_impl.presentation.view_objects.ProductInfoVO
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 
 interface ProductInfoInteractor {
-    fun getProductInfo(guid: String, context: Context): ProductInfoVO?
-    fun updateData(context: Context, lifecycleOwner: LifecycleOwner): LiveData<UpdateStatus>
+    fun getProductInfo(guid: String): ProductInfoVO?
+    fun updateData(): BehaviorSubject<UpdateStatus>
 }
 
 class ProductInfoInteractorImpl @Inject constructor(private val repository: ProductInfoRepository):
     ProductInfoInteractor {
 
-    override fun getProductInfo(guid: String, context: Context): ProductInfoVO? {
-        return repository.getProductInfo(guid, context)?.toVO()
+    override fun getProductInfo(guid: String): ProductInfoVO? {
+        return repository.getProductInfo(guid)?.toVO()
     }
 
     override fun updateData(
-        context: Context,
-        lifecycleOwner: LifecycleOwner
-    ): LiveData<UpdateStatus> {
-        return repository.updateData(context, lifecycleOwner)
+    ): BehaviorSubject<UpdateStatus> {
+        return repository.updateData()
     }
 }

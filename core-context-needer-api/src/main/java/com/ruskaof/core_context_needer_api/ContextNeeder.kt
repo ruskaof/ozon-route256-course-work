@@ -1,0 +1,3 @@
+package com.ruskaof.core_context_needer_api
+
+interface ContextNeeder
