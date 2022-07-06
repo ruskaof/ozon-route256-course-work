@@ -1,6 +1,5 @@
 package com.ruskaof.feature_product_impl.di
 
-import com.ruskaof.core_context_injector.ContextHolder
 import com.ruskaof.core_network_api.NetworkApi
 import com.ruskaof.core_utils.di.PerFeature
 import com.ruskaof.data_updater_api.DataUpdaterApi
@@ -47,7 +46,7 @@ abstract class ProductFeatureComponent {
 
     abstract fun inject(fragment: ProductsListFragment)
 
-    @Component(dependencies = [NetworkApi::class, ProductNavigationApi::class, DataUpdaterApi::class, ContextHolder::class])
+    @Component(dependencies = [NetworkApi::class, ProductNavigationApi::class, DataUpdaterApi::class])
     @PerFeature
     interface ProductsListFeatureDependenciesComponent : ProductsListFeatureDependencies
 }

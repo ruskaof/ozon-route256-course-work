@@ -3,7 +3,8 @@ package com.ruskaof.feature_product_impl.data.repository_impl
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ruskaof.core_context_injector.ContextHolder
+import com.ruskaof.core_context_injector.ContextInjectorComponent
+import com.ruskaof.core_context_needer_api.ContextNeeder
 import com.ruskaof.core_network_api.ProductApi
 import com.ruskaof.core_network_api.models.ProductInListDTO
 import com.ruskaof.core_utils.Constants
@@ -19,8 +20,12 @@ class ProductsListRepositoryImpl @Inject constructor(
     private val dataUpdaterApi: DataUpdaterApi,
     private val gson: Gson,
 ) :
-    ProductsListRepository {
-    private val context: Context = ContextHolder.get()
+    ProductsListRepository, ContextNeeder {
+    private lateinit var context: Context
+
+    init {
+        ContextInjectorComponent.get().inject(this)
+    }
 
     override fun getProductsList(): List<ProductInListDTO>? {
         val sharedPreferences =
@@ -36,7 +41,7 @@ class ProductsListRepositoryImpl @Inject constructor(
 
     override fun updateData(
     ): BehaviorSubject<UpdateStatus> {
-        return dataUpdaterApi.updateProductsData(context)
+        return dataUpdaterApi.updateProductsData()
     }
 
 }
