@@ -1,7 +1,7 @@
 package com.ruskaof.feature_product_impl.presentation.view_models
 
 
-import android.content.Context
+import android.annotation.SuppressLint
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,10 +15,11 @@ class ProductsListViewModel(private val productsInteractor: ProductsListInteract
     val productListLD: LiveData<List<ProductInListVO>> = _productsListLD
 
 
-    fun updateData(context: Context, lifecycleOwner: LifecycleOwner) {
-//        productsInteractor.updateData(context, lifecycleOwner).observe(lifecycleOwner) {
-//            _productsListLD.value = productsInteractor.getProductsList(context)
-//        }
+    @SuppressLint("CheckResult")
+    fun updateData(lifecycleOwner: LifecycleOwner) {
+        productsInteractor.updateData(lifecycleOwner).subscribe {
+            _productsListLD.value = productsInteractor.getProductsList()
+        }
     }
 
 

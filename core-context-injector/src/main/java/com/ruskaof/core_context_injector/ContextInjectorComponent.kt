@@ -1,7 +1,6 @@
 package com.ruskaof.core_context_injector
 
 import android.content.Context
-import com.ruskaof.core_context_needer_api.ContextNeeder
 import dagger.Component
 import javax.inject.Singleton
 
@@ -33,5 +32,5 @@ abstract class ContextInjectorComponent {
         }
     }
 
-    abstract fun inject(contextNeeder: ContextNeeder)
+    abstract fun getContext(): Context
 }

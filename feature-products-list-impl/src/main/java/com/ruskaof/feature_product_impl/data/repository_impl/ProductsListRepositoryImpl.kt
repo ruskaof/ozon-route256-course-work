@@ -1,6 +1,8 @@
 package com.ruskaof.feature_product_impl.data.repository_impl
 
 import android.content.Context
+import androidx.lifecycle.LifecycleOwner
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ruskaof.core_context_injector.ContextInjectorComponent
@@ -11,6 +13,7 @@ import com.ruskaof.core_utils.Constants
 import com.ruskaof.data_updater_api.DataUpdaterApi
 import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_product_impl.domain.repository.ProductsListRepository
+import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import java.lang.reflect.Type
 import javax.inject.Inject
@@ -21,19 +24,17 @@ class ProductsListRepositoryImpl @Inject constructor(
     private val gson: Gson,
 ) :
     ProductsListRepository, ContextNeeder {
-    @Inject
-    private lateinit var context: Context
+    private val context = ContextInjectorComponent.get().getContext()
 
-    init {
-        ContextInjectorComponent.get().inject(this)
-    }
-
-    override fun getProductsList(): List<ProductInListDTO>? {
+    override fun getProductsList(): Single<List<ProductInListDTO>?> {
         val sharedPreferences =
             context.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE)
-        val jsonData = sharedPreferences.getString(Constants.PRODUCTS_LIST_KEY, "")
+
+        val rxPreferences: RxSharedPreferences = RxSharedPreferences.create(sharedPreferences)
         val type: Type = object : TypeToken<List<ProductInListDTO>>() {}.type
-        return gson.fromJson(jsonData, type)
+        val jsonData = rxPreferences.getString(Constants.PRODUCTS_LIST_KEY, "")
+
+        return Single.fromObservable(jsonData.asObservable().map { gson.fromJson(it, type) })
     }
 
     override fun increaseViewCounter(guid: String) {
@@ -41,8 +42,9 @@ class ProductsListRepositoryImpl @Inject constructor(
     }
 
     override fun updateData(
+        lifecycleOwner: LifecycleOwner
     ): BehaviorSubject<UpdateStatus> {
-        return dataUpdaterApi.updateProductsData()
+        return dataUpdaterApi.updateProductsData(lifecycleOwner)
     }
 
 }

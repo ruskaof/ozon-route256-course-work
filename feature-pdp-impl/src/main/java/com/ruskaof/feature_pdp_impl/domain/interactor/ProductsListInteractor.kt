@@ -1,5 +1,6 @@
 package com.ruskaof.feature_pdp_impl.domain.interactor
 
+import androidx.lifecycle.LifecycleOwner
 import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_pdp_impl.domain.mapper.toVO
 import com.ruskaof.feature_pdp_impl.domain.repository.ProductInfoRepository
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 interface ProductInfoInteractor {
     fun getProductInfo(guid: String): ProductInfoVO?
-    fun updateData(): BehaviorSubject<UpdateStatus>
+    fun updateData(lifecycleOwner: LifecycleOwner): BehaviorSubject<UpdateStatus>
 }
 
 class ProductInfoInteractorImpl @Inject constructor(private val repository: ProductInfoRepository):
@@ -21,7 +22,8 @@ class ProductInfoInteractorImpl @Inject constructor(private val repository: Prod
     }
 
     override fun updateData(
+        lifecycleOwner: LifecycleOwner
     ): BehaviorSubject<UpdateStatus> {
-        return repository.updateData()
+        return repository.updateData(lifecycleOwner)
     }
 }

@@ -1,6 +1,7 @@
 package com.ruskaof.feature_pdp_impl.data.repository_impl
 
 import android.content.Context
+import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ruskaof.core_context_injector.ContextInjectorComponent
@@ -18,12 +19,7 @@ class ProductInfoRepositoryImpl @Inject constructor(
     private val gson: Gson,
     private val dataUpdaterApi: DataUpdaterApi
 ) : ProductInfoRepository, ContextNeeder {
-    @Inject
-    lateinit var context: Context
-
-    init {
-        ContextInjectorComponent.get().inject(this)
-    }
+    private val context = ContextInjectorComponent.get().getContext()
 
     override fun getProductInfo(guid: String): ProductInfoDTO? {
         val sharedPreferences =
@@ -35,8 +31,9 @@ class ProductInfoRepositoryImpl @Inject constructor(
     }
 
     override fun updateData(
+        lifecycleOwner: LifecycleOwner
     ): BehaviorSubject<UpdateStatus> {
-        return dataUpdaterApi.updateProductsData()
+        return dataUpdaterApi.updateProductsData(lifecycleOwner)
     }
 
 }
