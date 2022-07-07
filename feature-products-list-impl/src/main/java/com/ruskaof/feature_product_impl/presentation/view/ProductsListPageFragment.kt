@@ -64,7 +64,7 @@ class ProductsListPageFragment(private val cheapProducts: Boolean = true) :
     }
 
     override fun onResume() {
-
+        vm.updateData(this)
         disposable = Observable.interval(5, TimeUnit.MINUTES)
             .timeInterval()
             .observeOn(AndroidSchedulers.mainThread())

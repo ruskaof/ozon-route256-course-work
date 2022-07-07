@@ -32,6 +32,7 @@ android {
     }
 
     dependencies {
-        implementation 'androidx.work:work-rxjava2:2.7.1'
+        implementation rxjava
+        implementation rxworkers
     }
 }
