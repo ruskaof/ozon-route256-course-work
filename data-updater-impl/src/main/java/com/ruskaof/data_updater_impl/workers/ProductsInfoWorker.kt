@@ -25,6 +25,7 @@ class ProductsInfoWorker(
         DataUpdaterComponent.get().inject(this)
         return try {
             val data = productApi.getProductsInfo()
+
             data.map {
                 Result.success(
                     Data.Builder().putString(Constants.PRODUCTS_INFO_KEY, gson.toJson(it)).build()

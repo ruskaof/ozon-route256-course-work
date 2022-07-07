@@ -10,11 +10,15 @@ class ProductApiImpl @Inject constructor(private val serviceApi: ServiceApi) : P
 
 
     override fun getProductsList(): Single<List<ProductInListDTO>> {
-        return serviceApi.getProductsList()
+        val result = serviceApi.getProductsList()
+
+        return result
     }
 
     override fun getProductsInfo(): Single<List<ProductInfoDTO>> {
-        return serviceApi.getProductsInfo()
+        val result = serviceApi.getProductsInfo()
+
+        return result
     }
 
     override fun increaseViewCounter(guid: String) {

@@ -55,9 +55,10 @@ class DataUpdaterImpl : DataUpdaterApi, ContextNeeder {
         ).observe(lifecycleOwner) { workInfoList ->
             if (workInfoList.isEmpty()) return@observe
 
-
             val productsListWorkInfo =
                 workInfoList.find() { it.tags.contains(Constants.PRODUCTS_LIST_WORKER_NAME) }
+
+
             if (productsListWorkInfo?.state == WorkInfo.State.SUCCEEDED) {
                 setDataToSharedPref(productsListWorkInfo, Constants.PRODUCTS_LIST_KEY)
 
@@ -68,6 +69,7 @@ class DataUpdaterImpl : DataUpdaterApi, ContextNeeder {
 
             val productsInfoWorkInfo =
                 workInfoList.find() { it.tags.contains(Constants.PRODUCTS_INFO_WORKER_NAME) }
+
             if (productsInfoWorkInfo?.state == WorkInfo.State.SUCCEEDED) {
                 setDataToSharedPref(productsInfoWorkInfo, Constants.PRODUCTS_INFO_KEY)
                 _statusBS.onNext(UpdateStatus.PRODUCTS_INFO_UPDATED)

@@ -4,6 +4,7 @@ import com.ruskaof.core_network_api.NetworkApi
 import com.ruskaof.core_utils.di.PerFeature
 import com.ruskaof.data_updater_api.DataUpdaterApi
 import com.ruskaof.feature_product_impl.presentation.view.ProductsListFragment
+import com.ruskaof.feature_product_impl.presentation.view.ProductsListPageFragment
 import com.ruskaof.feature_products_api.ProductNavigationApi
 import dagger.Component
 
@@ -45,6 +46,8 @@ abstract class ProductFeatureComponent {
     }
 
     abstract fun inject(fragment: ProductsListFragment)
+    abstract fun inject(fragment: ProductsListPageFragment)
+
 
     @Component(dependencies = [NetworkApi::class, ProductNavigationApi::class, DataUpdaterApi::class])
     @PerFeature

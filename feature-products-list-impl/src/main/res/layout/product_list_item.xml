@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="84dp"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="16dp"
     app:cardCornerRadius="8dp"
@@ -13,11 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/productIV"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/photosPager"
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +32,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/productIV"
+            app:layout_constraintStart_toEndOf="@id/photosPager"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Яблоки" />
 
@@ -43,7 +44,7 @@
             android:layout_marginTop="8dp"
             android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/productIV"
+            app:layout_constraintStart_toEndOf="@id/photosPager"
             app:layout_constraintTop_toBottomOf="@id/nameTV"
             tools:text="15P" />
 
@@ -56,18 +57,29 @@
             android:isIndicator="true"
             android:rating="3"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/productIV"
+            app:layout_constraintStart_toEndOf="@id/photosPager"
             app:layout_constraintTop_toBottomOf="@id/priceTV" />
 
         <TextView
             android:id="@+id/viewCounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
             android:drawableLeft="@drawable/ic_round_remove_red_eye_24"
             android:text="0"
+
+            app:layout_constraintEnd_toEndOf="@+id/priceTV"
+            app:layout_constraintTop_toBottomOf="@+id/priceTV" />
+
+        <com.ruskaof.feature_product_impl.presentation.view.CustomButton
+            android:id="@+id/addToCartBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="В корзину"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/viewCounter"
+            app:layout_constraintTop_toBottomOf="@+id/viewCounter" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

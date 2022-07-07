@@ -12,6 +12,6 @@ fun ProductInListDTO.toVO(): ProductInListVO {
         rating = rating,
         isFavorite = isFavorite,
         isInCart = isInCart,
-        viewCounter = viewCounter
+        viewCounter = 7
     )
 }
