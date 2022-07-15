@@ -1,38 +1,39 @@
 package com.ruskaof.data_updater_impl.workers
 
 import android.content.Context
-import androidx.work.Data
-import androidx.work.RxWorker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.google.gson.Gson
 import com.ruskaof.core_network_api.ProductApi
-import com.ruskaof.core_utils.Constants
+import com.ruskaof.data_updater_api.model.toSaveObject
 import com.ruskaof.data_updater_impl.di.DataUpdaterComponent
-import io.reactivex.Single
+import com.ruskaof.data_updater_impl.productsListDataStore
 import javax.inject.Inject
 
 class ProductsListWorker(
-    context: Context,
+    private val context: Context,
     workerParameters: WorkerParameters,
-) : RxWorker(context, workerParameters) {
+) : CoroutineWorker(context, workerParameters) {
     @Inject
     lateinit var productApi: ProductApi
 
-    @Inject
-    lateinit var gson: Gson
 
-    override fun createWork(): Single<Result> {
+    override suspend fun doWork(): Result {
+
         DataUpdaterComponent.get().inject(this)
         return try {
             val data = productApi.getProductsList()
 
-            data.map {
-                Result.success(
-                    Data.Builder().putString(Constants.PRODUCTS_LIST_KEY, gson.toJson(it)).build()
-                )
+
+            context.productsListDataStore.updateData { listHolder ->
+                listHolder.copy(data.map { item -> item.toSaveObject() })
+
             }
+
+
+            Result.success()
         } catch (e: Exception) {
-            Single.error(e)
+
+            Result.failure()
         }
     }
 

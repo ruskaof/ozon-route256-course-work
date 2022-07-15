@@ -1,29 +1,26 @@
 package com.ruskaof.feature_pdp_impl.domain.interactor
 
-import androidx.lifecycle.LifecycleOwner
-import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_pdp_impl.domain.mapper.toVO
 import com.ruskaof.feature_pdp_impl.domain.repository.ProductInfoRepository
 import com.ruskaof.feature_pdp_impl.presentation.view_objects.ProductInfoVO
-import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
 interface ProductInfoInteractor {
-    fun getProductInfo(guid: String): ProductInfoVO?
-    fun updateData(lifecycleOwner: LifecycleOwner): BehaviorSubject<UpdateStatus>
+    fun getProductInfo(guid: String): Flow<ProductInfoVO?>
+    fun updateData()
 }
 
 class ProductInfoInteractorImpl @Inject constructor(private val repository: ProductInfoRepository):
     ProductInfoInteractor {
 
-    override fun getProductInfo(guid: String): ProductInfoVO? {
-        return repository.getProductInfo(guid)?.toVO()
+    override fun getProductInfo(guid: String): Flow<ProductInfoVO?> {
+        return repository.getProductInfo(guid).map { it?.toVO() }
     }
 
-    override fun updateData(
-        lifecycleOwner: LifecycleOwner
-    ): BehaviorSubject<UpdateStatus> {
-        return repository.updateData(lifecycleOwner)
+    override fun updateData() {
+        repository.updateData()
     }
 }

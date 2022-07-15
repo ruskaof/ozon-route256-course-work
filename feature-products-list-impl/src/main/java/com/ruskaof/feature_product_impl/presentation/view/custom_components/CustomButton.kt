@@ -1,4 +1,4 @@
-package com.ruskaof.feature_product_impl.presentation.view
+package com.ruskaof.feature_product_impl.presentation.view.custom_components
 
 import android.content.Context
 import android.util.AttributeSet
@@ -16,6 +16,10 @@ class CustomButton(context: Context, attributeSet: AttributeSet) :
         set(value) {
             field = value
             refreshDrawableState()
+
+            when (value) {
+                State.IN_CART -> this.text = "В корзине"
+            }
         }
 
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
@@ -28,16 +32,10 @@ class CustomButton(context: Context, attributeSet: AttributeSet) :
             mergeDrawableStates(drawableState, STATE_DONE)
         }
 
-        // По каким-то причинам приложение крашится, если написать так
-//        when (state) {
-//            State.NORMAL -> mergeDrawableStates(drawableState, STATE_NORMAL)
-//            State.LOADING -> mergeDrawableStates(drawableState, STATE_LOADING)
-//            State.DONE -> mergeDrawableStates(drawableState, STATE_DONE)
-//        }
         return drawableState
     }
 
     enum class State {
-        NORMAL, LOADING, DONE
+        NORMAL, LOADING, IN_CART
     }
 }

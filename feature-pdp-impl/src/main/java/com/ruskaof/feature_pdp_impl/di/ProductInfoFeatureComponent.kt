@@ -8,7 +8,7 @@ import com.ruskaof.feature_pdp_impl.presentation.view.ProductInfoFragment
 import dagger.Component
 
 @Component(
-    modules = [InteractorModule::class, RepositoryModule::class, GsonModule::class],
+    modules = [InteractorModule::class, RepositoryModule::class],
     dependencies = [ProductInfoFeatureDependencies::class]
 )
 @PerFeature

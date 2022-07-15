@@ -4,34 +4,38 @@ ext {
     ]
 
     versions = [
-            kotlin           : '1.6.10',
-            coreKtx          : '1.7.0',
-            appCompat        : '1.4.1',
-            material         : '1.5.0',
-            constraintLayout : '2.1.3',
-            junit            : '4.13.2',
-            androidtTestJunit: '1.1.3',
-            espresso         : '3.4.0',
-            lifecycle        : '2.3.1',
-            glide            : '4.13.0',
-            dagger           : '2.41',
-            fragment         : '1.4.1',
-            retrofit         : '2.9.0',
-            workers          : "2.7.1",
-            gson             : "2.8.8",
-            rxjava           : "2.2.21",
-            rxandroid        : "2.1.1",
-            rxJavaAdapter    : "2.3.0",
-            rxworkers        : "2.7.1",
-            rxpreferences    : "2.0.1"
+            kotlin              : '1.6.10',
+            coreKtx             : '1.7.0',
+            appCompat           : '1.4.1',
+            material            : '1.5.0',
+            constraintLayout    : '2.1.3',
+            junit               : '4.13.2',
+            androidtTestJunit   : '1.1.3',
+            espresso            : '3.4.0',
+            lifecycle           : '2.3.1',
+            glide               : '4.13.0',
+            dagger              : '2.41',
+            fragment            : '1.4.1',
+            retrofit            : '2.9.0',
+            workers             : "2.7.1",
+            rxjava              : "2.2.21",
+            rxandroid           : "2.1.1",
+            rxJavaAdapter       : "2.3.0",
+            rxworkers           : "2.7.1",
+            rxpreferences       : "2.0.1",
+            coroutines          : "1.3.5",
+            coroutinesWorker    : "2.7.1",
+            datastore           : "1.0.0",
+            collectionsImmutable: "0.3.5",
+            kotlinSerialization : "1.3.2",
+            gson : "2.9.0"
     ]
 
     retrofit = "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     gsonConverter = "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
 
     coreKtx = "androidx.core:core-ktx:${versions.coreKtx}"
-
-    gson = "com.google.code.gson:gson:${versions.gson}"
+    
 
     appCompat = "androidx.appcompat:appcompat:${versions.appCompat}"
 
@@ -67,4 +71,13 @@ ext {
     rxjavaAdapter = "com.squareup.retrofit2:adapter-rxjava2:${versions.rxJavaAdapter}"
 
     rxpreferences = "com.f2prateek.rx.preferences2:rx-preferences:${versions.rxpreferences}"
+
+    coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    coroutinesWorker = "androidx.work:work-runtime-ktx:${versions.coroutinesWorker}"
+
+    datastore = "androidx.datastore:datastore:${versions.datastore}"
+    //collectionsImmutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:${versions.collectionsImmutable}"
+    kotlinSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.kotlinSerialization}"
+
+    gson = "com.google.code.gson:gson:${versions.gson}"
 }

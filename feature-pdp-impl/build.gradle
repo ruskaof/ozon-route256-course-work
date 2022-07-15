@@ -52,7 +52,7 @@ dependencies {
     implementation glide
     implementation dagger
     implementation workers
-    implementation gson
-    implementation rxjava
+    implementation datastore
+    implementation coroutines
     kapt daggerCompiler
 }

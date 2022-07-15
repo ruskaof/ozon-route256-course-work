@@ -1,25 +1,44 @@
 package com.ruskaof.data_updater_impl
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
-import androidx.work.*
+import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.work.BackoffPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.ruskaof.core_context_injector.ContextInjectorComponent
 import com.ruskaof.core_context_needer_api.ContextNeeder
+import com.ruskaof.core_network_api.models.ProductInListDTO
+import com.ruskaof.core_network_api.models.ProductInfoDTO
 import com.ruskaof.core_utils.Constants
 import com.ruskaof.data_updater_api.DataUpdaterApi
-import com.ruskaof.data_updater_api.UpdateStatus
+import com.ruskaof.data_updater_api.model.DataStoreListHolder
+import com.ruskaof.data_updater_api.model.ProductInListSaveObject
+import com.ruskaof.data_updater_api.model.ProductInfoSaveObject
+import com.ruskaof.data_updater_api.model.toDTO
 import com.ruskaof.data_updater_impl.workers.ProductsInfoWorker
 import com.ruskaof.data_updater_impl.workers.ProductsListWorker
-import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
 
-class DataUpdaterImpl : DataUpdaterApi, ContextNeeder {
-    private val _statusBS: BehaviorSubject<UpdateStatus> = BehaviorSubject.create()
 
+val Context.productInfoDataStore: DataStore<DataStoreListHolder<ProductInfoSaveObject>> by dataStore(
+    Constants.PRODUCTS_INFO_KEY,
+    ProductsInfoSerializer
+)
+
+val Context.productsListDataStore: DataStore<DataStoreListHolder<ProductInListSaveObject>> by dataStore(
+    Constants.PRODUCTS_LIST_KEY,
+    ProductsListSerializer
+)
+
+class DataUpdaterImpl : DataUpdaterApi, ContextNeeder {
     private val context: Context = ContextInjectorComponent.get().getContext()
 
-
-    override fun updateProductsData(lifecycleOwner: LifecycleOwner): BehaviorSubject<UpdateStatus> {
+    override fun updateProductsData(
+    ) {
         val workManager = WorkManager.getInstance(context)
 
         val productsListRequest = OneTimeWorkRequest.Builder(ProductsListWorker::class.java)
@@ -33,61 +52,19 @@ class DataUpdaterImpl : DataUpdaterApi, ContextNeeder {
 
         workManager.beginWith(productsListRequest).then(productsInfoRequest).enqueue()
 
-        observeAndSet(
-            workManager,
-            lifecycleOwner,
-            Constants.PRODUCTS_LIST_WORKER_NAME,
-            Constants.PRODUCTS_INFO_WORKER_NAME
-        )
-
-        return _statusBS
     }
 
+    override fun getCurrentSavedProductsInfo(): Flow<List<ProductInfoDTO>> {
+        return context.productInfoDataStore.data.map { listHolder -> listHolder.list.map { item -> item.toDTO() } }
+    }
 
-    private fun observeAndSet(
-        workManager: WorkManager,
-        lifecycleOwner: LifecycleOwner,
-        vararg workerNames: String
-    ) {
-        workManager.getWorkInfosLiveData(
-            WorkQuery.Builder.fromTags(listOf(*workerNames))
-                .build()
-        ).observe(lifecycleOwner) { workInfoList ->
-            if (workInfoList.isEmpty()) return@observe
-
-            val productsListWorkInfo =
-                workInfoList.find() { it.tags.contains(Constants.PRODUCTS_LIST_WORKER_NAME) }
-
-
-            if (productsListWorkInfo?.state == WorkInfo.State.SUCCEEDED) {
-                setDataToSharedPref(productsListWorkInfo, Constants.PRODUCTS_LIST_KEY)
-
-                _statusBS.onNext(UpdateStatus.PRODUCTS_LIST_UPDATED)
-            } else {
-                _statusBS.onNext(UpdateStatus.ERROR)
-            }
-
-            val productsInfoWorkInfo =
-                workInfoList.find() { it.tags.contains(Constants.PRODUCTS_INFO_WORKER_NAME) }
-
-            if (productsInfoWorkInfo?.state == WorkInfo.State.SUCCEEDED) {
-                setDataToSharedPref(productsInfoWorkInfo, Constants.PRODUCTS_INFO_KEY)
-                _statusBS.onNext(UpdateStatus.PRODUCTS_INFO_UPDATED)
-            } else {
-                _statusBS.onNext(UpdateStatus.ERROR)
+    override fun getCurrentSavedProductsList(): Flow<List<ProductInListDTO>> {
+        Log.d("debuug", "getCurrentSavedProductsList: trying to get")
+        return context.productsListDataStore.data.map { listHolder ->
+            listHolder.list.map { item -> item.toDTO() }.onEach {
+                Log.d("debuug", "getCurrentSavedProductsList: got update")
             }
         }
     }
 
-    private fun setDataToSharedPref(workInfo: WorkInfo, key: String) {
-        val data = workInfo.outputData
-        val response = data.getString(key) ?: ""
-        val sharedPreferences =
-            context.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
-        editor.remove(key)
-        editor.putString(key, response)
-        editor.apply()
-    }
 }

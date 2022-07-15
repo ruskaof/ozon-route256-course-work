@@ -1,36 +1,30 @@
 package com.ruskaof.feature_product_impl.domain.interactor
 
-import androidx.lifecycle.LifecycleOwner
-import com.ruskaof.data_updater_api.UpdateStatus
 import com.ruskaof.feature_product_impl.domain.mapper.toVO
 import com.ruskaof.feature_product_impl.domain.repository.ProductsListRepository
 import com.ruskaof.feature_product_impl.presentation.view_objects.ProductInListVO
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface ProductsListInteractor {
-    fun getProductsList(): Observable<List<ProductInListVO>?>
-    fun updateData(lifecycleOwner: LifecycleOwner): BehaviorSubject<UpdateStatus>
+    fun getProductsList(): Flow<List<ProductInListVO>?>
+    fun updateData()
     fun increaseViewCounter(guid: String)
 }
 
 class ProductsListInteractorImpl @Inject constructor(private val repository: ProductsListRepository) :
     ProductsListInteractor {
-    override fun getProductsList(): Observable<List<ProductInListVO>?> {
+    override fun getProductsList(): Flow<List<ProductInListVO>?> {
+        return repository.getProductsList().map { list -> list?.map { item -> item.toVO() } }
+    }
 
-        val result = repository.getProductsList().map { list -> list.map { dto -> dto.toVO() } }
-        return result
-
+    override fun updateData() {
+        return repository.updateData()
     }
 
     override fun increaseViewCounter(guid: String) {
         repository.increaseViewCounter(guid)
     }
 
-    override fun updateData(
-        lifecycleOwner: LifecycleOwner
-    ): BehaviorSubject<UpdateStatus> {
-        return repository.updateData(lifecycleOwner)
-    }
 }

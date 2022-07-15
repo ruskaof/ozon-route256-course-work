@@ -39,13 +39,15 @@ dependencies {
     implementation project(":core-context-injector")
     implementation project(":core-context-needer-api")
 
-    implementation gson
     implementation coreKtx
     implementation dagger
     implementation lifecycle
     implementation workers
-    implementation rxworkers
-    implementation rxjava
+    implementation coroutines
+    implementation coroutinesWorker
+    implementation datastore
+    implementation kotlinSerialization
+//    implementation collectionsImmutable
 
     kapt daggerCompiler
 }

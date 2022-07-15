@@ -7,7 +7,7 @@ import com.ruskaof.data_updater_impl.workers.ProductsListWorker
 import dagger.Component
 
 @Component(
-    modules = [GsonModule::class, DataUpdaterModule::class],
+    modules = [DataUpdaterModule::class],
     dependencies = [DataUpdaterDependencies::class]
 )
 abstract class DataUpdaterComponent {

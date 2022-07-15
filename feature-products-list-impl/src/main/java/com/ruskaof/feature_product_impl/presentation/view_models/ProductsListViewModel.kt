@@ -1,38 +1,61 @@
 package com.ruskaof.feature_product_impl.presentation.view_models
 
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ruskaof.data_updater_api.UpdateStatus
+import androidx.lifecycle.viewModelScope
 import com.ruskaof.feature_product_impl.domain.interactor.ProductsListInteractor
 import com.ruskaof.feature_product_impl.presentation.view_objects.ProductInListVO
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.ExperimentalTime
 
 
 class ProductsListViewModel(private val productsInteractor: ProductsListInteractor) : ViewModel() {
     private val _productsListLD: MutableLiveData<List<ProductInListVO>> = MutableLiveData()
     val productListLD: LiveData<List<ProductInListVO>> = _productsListLD
 
+    private lateinit var updatingJob: Job
 
-    @SuppressLint("CheckResult")
-    fun updateData(lifecycleOwner: LifecycleOwner) {
-        productsInteractor.updateData(lifecycleOwner).subscribe { status ->
+    @Volatile
+    private var isUpdatingNow = false
 
-            if (status == UpdateStatus.PRODUCTS_LIST_UPDATED) {
-                productsInteractor.getProductsList().take(1).subscribe {
-                    _productsListLD.value = it
-                }
-            }
-        }
+    init {
+        productsInteractor.getProductsList().onEach {
+            _productsListLD.value = it
+        }.launchIn(viewModelScope)
+    }
+
+    fun updateData() {
+        productsInteractor.updateData()
     }
 
 
     fun increaseViewCounter(guid: String) {
-//        productsInteractor.increaseViewCounter(guid)
-//        productsList.first() { it.guid == guid }.viewCounter++
-//        _productsListLD.value = productsList
+        productsInteractor.increaseViewCounter(guid)
+    }
+
+    @OptIn(ExperimentalTime::class)
+    fun startUpdatingWithInterval() {
+        val duration: Duration = 5.minutes
+        updatingJob = viewModelScope.launch {
+            isUpdatingNow = true
+            while (isUpdatingNow) {
+                delay(duration)
+                updateData()
+            }
+        }
+    }
+
+    fun stopUpdatingWithInterval() {
+        isUpdatingNow = false
+        updatingJob.cancel()
     }
 
 }

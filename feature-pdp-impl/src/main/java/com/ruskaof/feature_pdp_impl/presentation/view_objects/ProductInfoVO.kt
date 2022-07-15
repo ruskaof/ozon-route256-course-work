@@ -3,7 +3,7 @@ package com.ruskaof.feature_pdp_impl.presentation.view_objects
 data class ProductInfoVO(
     val guid: String,
     val name: String,
-    val price: String,
+    val price: Int,
     val description: String,
     val rating: Double,
     val isFavorite: Boolean,

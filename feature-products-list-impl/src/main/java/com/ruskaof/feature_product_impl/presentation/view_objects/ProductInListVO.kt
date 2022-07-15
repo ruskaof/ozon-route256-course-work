@@ -8,5 +8,13 @@ data class ProductInListVO(
     val rating: Double,
     val isFavorite: Boolean,
     val isInCart: Boolean,
-    var viewCounter: Int
+    val viewCounter: String,
+    val isExpensive: Boolean,
+    val priceBeforeDiscount: String,
+    val discount: String?,
+    val thereWasDiscount: Boolean,
+    val shippingDate: String,
+    val shippingCompanyName: String,
+    val sellerName: String,
+    val reviewCount: String
 )

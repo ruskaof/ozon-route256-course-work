@@ -8,6 +8,7 @@ import com.ruskaof.feature_product_impl.presentation.view.ProductsListFragment
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         initNonFeatureDI()
         openProductsFragment()
@@ -25,7 +26,6 @@ class MainActivity : AppCompatActivity() {
                 newFragment,
                 ProductsListFragment::class.simpleName
             )
-            .addToBackStack(null)
             .commit()
     }
 

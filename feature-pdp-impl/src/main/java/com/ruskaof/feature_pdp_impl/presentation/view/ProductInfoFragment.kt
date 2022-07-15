@@ -61,7 +61,7 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
 
         vm.productInfoLD.observe(viewLifecycleOwner) {
             if (it != null) {
-                price.text = it.price
+                price.text = it.price.toString()
                 name.text = it.name
                 rating.rating = it.rating.toFloat()
                 info.text = it.description
@@ -72,8 +72,6 @@ class ProductInfoFragment : Fragment(R.layout.fragment_product_info) {
                 itemsCL.isVisible = true
             }
         }
-
-        vm.updateData()
     }
 
 
